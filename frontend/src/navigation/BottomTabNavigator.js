@@ -1,15 +1,13 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { useTheme } from '../context/ThemeContext';
+import { MaterialIcons } from '@expo/vector-icons';
+import { useTheme } from '../hooks/useTheme';
 import { FeedScreen } from '../screens/FeedScreen';
 import { GroupsScreen } from '../screens/GroupsScreen';
 import { GroupFeedScreen } from '../screens/GroupFeedScreen';
 import { CreatePostScreen } from '../screens/CreatePostScreen';
-
-// Placeholder screen
-const ProfileScreen = () => null;
+import { ProfileScreen } from '../screens/ProfileScreen';
 
 const Tab = createBottomTabNavigator();
 const GroupStack = createStackNavigator();
@@ -30,21 +28,21 @@ function GroupStackNavigator() {
 }
 
 export function BottomTabNavigator() {
-  const { colors } = useTheme();
+  const { colors: themeColors } = useTheme();
 
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: colors.primary,
-        tabBarInactiveTintColor: colors.gray[500],
+        tabBarActiveTintColor: themeColors.primary,
+        tabBarInactiveTintColor: themeColors.gray[500],
         tabBarStyle: {
-          backgroundColor: colors.background,
-          borderTopColor: colors.gray[200],
+          backgroundColor: themeColors.background,
+          borderTopColor: themeColors.gray[200],
         },
         headerStyle: {
-          backgroundColor: colors.background,
+          backgroundColor: themeColors.background,
         },
-        headerTintColor: colors.text,
+        headerTintColor: themeColors.text,
       }}
     >
       <Tab.Screen
@@ -52,7 +50,7 @@ export function BottomTabNavigator() {
         component={FeedScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="newspaper-outline" size={size} color={color} />
+            <MaterialIcons name="article" size={size} color={color} />
           ),
           headerShown: false,
         }}
@@ -62,7 +60,7 @@ export function BottomTabNavigator() {
         component={GroupStackNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="people-outline" size={size} color={color} />
+            <MaterialIcons name="group" size={size} color={color} />
           ),
           headerShown: false,
         }}
@@ -72,7 +70,7 @@ export function BottomTabNavigator() {
         component={CreatePostScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="add-circle-outline" size={size} color={color} />
+            <MaterialIcons name="add-circle-outline" size={size} color={color} />
           ),
         }}
       />
@@ -81,7 +79,7 @@ export function BottomTabNavigator() {
         component={ProfileScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="person-outline" size={size} color={color} />
+            <MaterialIcons name="person" size={size} color={color} />
           ),
         }}
       />

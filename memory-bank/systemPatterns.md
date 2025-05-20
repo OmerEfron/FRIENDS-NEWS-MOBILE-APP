@@ -1,130 +1,243 @@
-# System Architecture and Patterns
+# System Patterns
 
-## Directory Structure
+## Architecture Overview
+
+### Directory Structure
 ```
-frontend/
+backend/
 ├── src/
-│   ├── components/
-│   │   ├── common/      # Shared components
-│   │   ├── feed/        # Feed-related components
-│   │   ├── groups/      # Group-related components
-│   │   └── posts/       # Post-related components
-│   ├── screens/         # Main screen components
-│   ├── navigation/      # Navigation configuration
-│   ├── hooks/          # Custom React hooks
+│   ├── data/           # JSON data files
+│   │   ├── groups.json
+│   │   ├── posts.json
+│   │   └── media.json
+│   ├── models/         # Data models & file operations
+│   ├── controllers/    # Route controllers
+│   ├── middleware/     # Custom middleware
+│   ├── routes/         # API routes
+│   ├── services/       # Business logic
 │   ├── utils/          # Utility functions
-│   ├── constants/      # App constants
-│   └── context/        # React Context providers
+│   └── app.js         # App entry point
+└── tests/            # Test files
 ```
 
-## Design Patterns
+### Data Storage Pattern
 
-### Component Architecture
-1. Atomic Design Methodology
-   - Atoms (basic UI elements)
-   - Molecules (component combinations)
-   - Organisms (complex components)
-   - Templates (screen layouts)
-   - Pages (full screens)
+#### JSON File Structure
+1. Groups Data (`data/groups.json`):
+```json
+{
+  "groups": [
+    {
+      "id": "group-1",
+      "name": "Close Friends",
+      "description": "Inner circle updates",
+      "avatar": "url/to/avatar",
+      "memberCount": 8,
+      "createdAt": "2024-03-15T10:00:00Z"
+    }
+  ]
+}
+```
 
-2. Component Patterns
-   - Presentational Components
-   - Container Components
-   - Higher-Order Components
-   - Custom Hooks
+2. Posts Data (`data/posts.json`):
+```json
+{
+  "posts": [
+    {
+      "id": "post-1",
+      "headline": "Breaking: Friend's Birthday Party",
+      "subheadline": "Surprise celebration planned",
+      "content": "Full story details...",
+      "media": {
+        "url": "url/to/media",
+        "thumbnail": "url/to/thumbnail",
+        "type": "image"
+      },
+      "groupId": "group-1",
+      "isBreakingNews": true,
+      "createdAt": "2024-03-15T12:00:00Z"
+    }
+  ]
+}
+```
 
-### State Management
-1. React Context
-   - ThemeContext for app-wide theming
-   - Future: AuthContext, DataContext
+### File Operations Pattern
 
-2. Local State
-   - useState for component state
-   - useReducer for complex state
+#### Data Access Layer
+```javascript
+// models/fileDb.js
+class FileDb {
+  static async readData(filename) {
+    // Read JSON file
+  }
+  
+  static async writeData(filename, data) {
+    // Write to JSON file
+  }
+  
+  static async generateId(prefix) {
+    // Generate unique ID
+  }
+}
+```
 
-### Navigation Pattern
-1. Bottom Tab Navigation
-   - Feed
-   - Groups
-   - Create
-   - Profile
+#### Model Operations
+```javascript
+// models/group.model.js
+class GroupModel {
+  static async findAll() {
+    const data = await FileDb.readData('groups.json');
+    return data.groups;
+  }
+  
+  static async findById(id) {
+    const data = await FileDb.readData('groups.json');
+    return data.groups.find(g => g.id === id);
+  }
+  
+  static async create(groupData) {
+    const data = await FileDb.readData('groups.json');
+    const id = await FileDb.generateId('group');
+    const newGroup = { id, ...groupData };
+    data.groups.push(newGroup);
+    await FileDb.writeData('groups.json', data);
+    return newGroup;
+  }
+}
+```
 
-2. Stack Navigation
-   - Groups List → Group Feed
-   - Feed → Post Details
-   - Future: Auth flows
+### Service Layer Pattern
+```javascript
+// services/group.service.js
+class GroupService {
+  static async getGroups() {
+    return GroupModel.findAll();
+  }
+  
+  static async createGroup(data) {
+    // Validate data
+    // Create group
+    return GroupModel.create(data);
+  }
+}
+```
 
-## UI/UX Patterns
+### Controller Pattern
+```javascript
+// controllers/group.controller.js
+const getGroups = async (req, res) => {
+  try {
+    const groups = await GroupService.getGroups();
+    res.json({ status: 'success', data: groups });
+  } catch (error) {
+    next(error);
+  }
+};
+```
 
-### Theme System
-1. Colors
-   - Primary: #0070f3
-   - Secondary: #ef4444
-   - Background (light/dark)
-   - Text (light/dark)
-   - Gray scale
+### Media Handling
+1. Local Storage
+```javascript
+// services/media.service.js
+class MediaService {
+  static async saveFile(file) {
+    // Save to local uploads directory
+    // Generate public URL
+    // Return file metadata
+  }
+}
+```
 
-2. Typography
-   - Headline: 24px
-   - Subheadline: 18px
-   - Body: 16px
-   - Caption: 14px
-   - Small: 12px
+2. File Structure
+```
+backend/
+└── public/
+    └── uploads/
+        ├── images/
+        └── thumbnails/
+```
 
-### Layout System
-1. Spacing Scale
-   - xs: 4px
-   - sm: 8px
-   - md: 16px
-   - lg: 24px
-   - xl: 32px
-   - xxl: 48px
+### Error Handling
+```javascript
+// middleware/error.js
+const errorHandler = (err, req, res, next) => {
+  // Log error
+  // Send appropriate response
+};
+```
 
-2. Layout Patterns
-   - Card-based design
-   - List views
-   - Grid systems
-   - Responsive layouts
+## Implementation Guidelines
 
-### Animation Patterns
-1. Timing
-   - Fast: 200ms
-   - Normal: 300ms
-   - Slow: 500ms
+### Data Operations
+1. File Reading
+```javascript
+const readJsonFile = async (filename) => {
+  try {
+    const data = await fs.readFile(filename);
+    return JSON.parse(data);
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return { groups: [], posts: [] };
+    }
+    throw error;
+  }
+};
+```
 
-2. Types
-   - Fade transitions
-   - Scale animations
-   - Slide transitions
-   - Loading states
+2. File Writing
+```javascript
+const writeJsonFile = async (filename, data) => {
+  await fs.writeFile(
+    filename,
+    JSON.stringify(data, null, 2)
+  );
+};
+```
 
-## Data Patterns
+3. ID Generation
+```javascript
+const generateId = (prefix) => {
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+};
+```
 
-### Mock Data Structure
-1. Users
-   - Basic info
-   - Avatar
-   - Groups
+### Testing Strategy
 
-2. Groups
-   - Details
-   - Members
-   - Posts
-   - Statistics
+#### Unit Tests
+```javascript
+describe('GroupModel', () => {
+  beforeEach(() => {
+    // Reset test data files
+  });
+  
+  it('creates new group', async () => {
+    // Test implementation
+  });
+});
+```
 
-3. Posts
-   - Content
-   - Media
-   - Metadata
-   - Breaking news status
+#### Integration Tests
+```javascript
+describe('Group API', () => {
+  it('returns list of groups', async () => {
+    // Test implementation
+  });
+});
+```
 
-### Future API Integration
-1. RESTful Endpoints
-   - Authentication
-   - CRUD operations
-   - Real-time updates
+### API Response Format
+```javascript
+// Success response
+{
+  "status": "success",
+  "data": {
+    // Response data
+  }
+}
 
-2. Data Flow
-   - Request/Response handling
-   - Error management
-   - Caching strategy 
+// Error response
+{
+  "status": "error",
+  "message": "Error description"
+}
+``` 

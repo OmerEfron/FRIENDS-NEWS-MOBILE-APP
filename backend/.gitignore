@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Uploaded files
+public/uploads/*
+!public/uploads/.gitkeep
+!public/uploads/images/.gitkeep
+!public/uploads/thumbnails/.gitkeep
+
+# Build
+dist/
+build/
+
+# Debug
+.debug/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Data files (since we're using file-based storage)
+src/data/*.json
+!src/data/.gitkeep
+
+# Local development
+.nodemon.json
+.node_repl_history 
