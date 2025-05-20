@@ -1,0 +1,187 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Data Structure and State Management
+
+## Data Models
+
+### User
+```javascript
+// types/User.js
+{
+  id: string,
+  username: string,
+  displayName: string,
+  avatar: string,
+  groups: string[],  // Array of group IDs
+  createdAt: timestamp,
+  settings: {
+    notifications: boolean,
+    darkMode: boolean,
+    language: string
+  }
+}
+```
+
+### Post
+```javascript
+// types/Post.js
+{
+  id: string,
+  authorId: string,
+  groupId: string,
+  headline: string,
+  subheadline: string,
+  content: string,
+  media: {
+    type: 'image' | 'video',
+    url: string,
+    thumbnail: string
+  },
+  metadata: {
+    createdAt: timestamp,
+    updatedAt: timestamp,
+    views: number,
+    reactions: {
+      type: number  // Map of reaction types to counts
+    }
+  },
+  isBreakingNews: boolean
+}
+```
+
+### Group
+```javascript
+// types/Group.js
+{
+  id: string,
+  name: string,
+  description: string,
+  avatar: string,
+  members: string[],  // Array of user IDs
+  admins: string[],   // Array of user IDs
+  settings: {
+    isPrivate: boolean,
+    postApprovalRequired: boolean,
+    allowedMediaTypes: string[]
+  },
+  metadata: {
+    createdAt: timestamp,
+    postCount: number,
+    memberCount: number
+  }
+}
+```
+
+## State Management
+
+### Context Structure
+```javascript
+// context/AppContext.js
+{
+  user: {
+    currentUser: User,
+    isAuthenticated: boolean,
+    preferences: Object
+  },
+  feed: {
+    posts: Post[],
+    loading: boolean,
+    error: string | null,
+    filters: Object
+  },
+  groups: {
+    list: Group[],
+    activeGroup: string,
+    loading: boolean
+  },
+  ui: {
+    theme: 'light' | 'dark',
+    notifications: [],
+    modals: {
+      createPost: boolean,
+      groupSettings: boolean
+    }
+  }
+}
+```
+
+### Actions
+```javascript
+// actions/types.js
+export const actions = {
+  // User Actions
+  USER_LOGIN: 'USER_LOGIN',
+  USER_LOGOUT: 'USER_LOGOUT',
+  UPDATE_PREFERENCES: 'UPDATE_PREFERENCES',
+
+  // Post Actions
+  CREATE_POST: 'CREATE_POST',
+  UPDATE_POST: 'UPDATE_POST',
+  DELETE_POST: 'DELETE_POST',
+  FETCH_POSTS: 'FETCH_POSTS',
+
+  // Group Actions
+  CREATE_GROUP: 'CREATE_GROUP',
+  JOIN_GROUP: 'JOIN_GROUP',
+  LEAVE_GROUP: 'LEAVE_GROUP',
+  UPDATE_GROUP: 'UPDATE_GROUP',
+
+  // UI Actions
+  TOGGLE_THEME: 'TOGGLE_THEME',
+  SHOW_NOTIFICATION: 'SHOW_NOTIFICATION',
+  TOGGLE_MODAL: 'TOGGLE_MODAL'
+}
+```
+
+## Local Storage
+```javascript
+// utils/storage.js
+export const storageKeys = {
+  USER_TOKEN: '@friendlines/user_token',
+  USER_PREFERENCES: '@friendlines/preferences',
+  CACHED_POSTS: '@friendlines/posts',
+  CACHED_GROUPS: '@friendlines/groups'
+}
+```
+
+## API Structure
+```javascript
+// api/endpoints.js
+export const endpoints = {
+  auth: {
+    login: '/auth/login',
+    register: '/auth/register',
+    logout: '/auth/logout'
+  },
+  posts: {
+    list: '/posts',
+    create: '/posts',
+    update: '/posts/:id',
+    delete: '/posts/:id',
+    react: '/posts/:id/react'
+  },
+  groups: {
+    list: '/groups',
+    create: '/groups',
+    update: '/groups/:id',
+    members: '/groups/:id/members'
+  },
+  users: {
+    profile: '/users/profile',
+    update: '/users/profile',
+    settings: '/users/settings'
+  }
+}
+```
+
+## Data Flow
+1. User actions trigger context actions
+2. Actions update local state
+3. API calls are made as needed
+4. Success/failure handlers update UI state
+5. Components re-render with new data
+6. Important data is cached in local storage
+7. Error boundaries catch and handle failures

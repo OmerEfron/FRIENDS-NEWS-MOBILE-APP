@@ -1,0 +1,130 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Component Specifications
+
+## Common Components
+
+### Header
+```jsx
+// components/common/Header.js
+- Logo component with app name
+- Search input with icon
+- Live badge (red, pulsing)
+- Props: onSearch, isLive
+```
+
+### GroupTabs
+```jsx
+// components/groups/GroupTabs.js
+- Horizontal scrollable tabs
+- Active state indication
+- Props: groups, activeGroup, onGroupChange
+- Animation on tab switch
+```
+
+### BreakingNewsBanner
+```jsx
+// components/feed/BreakingNewsBanner.js
+- Horizontal scrolling ticker
+- Auto-scrolling headlines
+- Props: breakingNews, speed
+- Pause on touch
+```
+
+### PostCard
+```jsx
+// components/posts/PostCard.js
+- News-style card layout
+- Media thumbnail
+- Headline and subheadline
+- Author info and timestamp
+- Props: post, onPress
+- Shadow and hover effects
+```
+
+## Screen Components
+
+### FeedScreen
+```jsx
+// screens/FeedScreen.js
+Components:
+- Header
+- GroupTabs
+- BreakingNewsBanner
+- PostCard list
+- Create Post FAB
+```
+
+### GroupFeedScreen
+```jsx
+// screens/GroupFeedScreen.js
+Components:
+- Group header with stats
+- Filtered PostCard list
+- Group-specific actions
+```
+
+### CreatePostScreen
+```jsx
+// screens/CreatePostScreen.js
+Components:
+- Media picker
+- Text input for story
+- Preview section
+- Submit button
+```
+
+### PostViewerScreen
+```jsx
+// screens/PostViewerScreen.js
+Components:
+- Full-screen media
+- Complete headline
+- Story context
+- Interaction buttons
+```
+
+## Navigation
+
+### BottomTabNavigator
+```jsx
+// navigation/BottomTabNavigator.js
+Tabs:
+- Feed
+- Groups
+- Create
+- Profile
+```
+
+### StackNavigator
+```jsx
+// navigation/StackNavigator.js
+Screens:
+- Feed
+- GroupFeed
+- PostViewer
+- CreatePost
+```
+
+## Shared Elements
+
+### ThemeProvider
+```jsx
+// context/ThemeContext.js
+Features:
+- Light/dark mode toggle
+- Theme constants
+- Custom hooks
+```
+
+### AnimationWrapper
+```jsx
+// components/common/AnimationWrapper.js
+Features:
+- Reusable animations
+- Loading states
+- Transition effects
+```

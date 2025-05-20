@@ -1,0 +1,197 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Styling and Design Guidelines
+
+## Color Palette
+```javascript
+// constants/colors.js
+export const colors = {
+  primary: '#0070f3',
+  secondary: '#ef4444',
+  background: {
+    light: '#ffffff',
+    dark: '#1a1a1a'
+  },
+  text: {
+    light: '#1a1a1a',
+    dark: '#ffffff'
+  },
+  gray: {
+    100: '#f5f5f5',
+    200: '#e5e5e5',
+    300: '#d4d4d4',
+    400: '#a3a3a3',
+    500: '#737373',
+    600: '#525252',
+    700: '#404040',
+    800: '#262626',
+    900: '#171717'
+  }
+}
+```
+
+## Typography
+```javascript
+// constants/typography.js
+export const typography = {
+  fonts: {
+    primary: 'Inter',
+    secondary: 'Roboto'
+  },
+  sizes: {
+    headline: 24,
+    subheadline: 18,
+    body: 16,
+    caption: 14,
+    small: 12
+  },
+  weights: {
+    regular: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700'
+  }
+}
+```
+
+## Spacing and Layout
+```javascript
+// constants/spacing.js
+export const spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48
+}
+
+export const layout = {
+  borderRadius: {
+    sm: 4,
+    md: 8,
+    lg: 12,
+    full: 9999
+  },
+  maxWidth: {
+    card: 600,
+    container: 1200
+  }
+}
+```
+
+## Shadows
+```javascript
+// constants/shadows.js
+export const shadows = {
+  sm: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+    elevation: 1
+  },
+  md: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  lg: {
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.30,
+    shadowRadius: 4.65,
+    elevation: 8
+  }
+}
+```
+
+## Animations
+```javascript
+// constants/animations.js
+export const animations = {
+  timing: {
+    fast: 200,
+    normal: 300,
+    slow: 500
+  },
+  easing: {
+    easeInOut: 'ease-in-out',
+    easeOut: 'ease-out',
+    easeIn: 'ease-in'
+  }
+}
+```
+
+## Component-Specific Styles
+
+### Cards
+```javascript
+// styles/cards.js
+export const cardStyles = {
+  container: {
+    borderRadius: layout.borderRadius.md,
+    backgroundColor: colors.background.light,
+    padding: spacing.md,
+    ...shadows.md
+  },
+  image: {
+    borderRadius: layout.borderRadius.sm,
+    aspectRatio: 16/9
+  }
+}
+```
+
+### Buttons
+```javascript
+// styles/buttons.js
+export const buttonStyles = {
+  primary: {
+    backgroundColor: colors.primary,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: layout.borderRadius.full
+  },
+  secondary: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: colors.primary
+  }
+}
+```
+
+### Headers
+```javascript
+// styles/headers.js
+export const headerStyles = {
+  container: {
+    height: 60,
+    paddingHorizontal: spacing.md,
+    backgroundColor: colors.background.light,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray[200]
+  }
+}
+```
+
+## Responsive Design
+```javascript
+// utils/responsive.js
+export const breakpoints = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280
+}
+
+export const getResponsiveSize = (size, screenWidth) => {
+  if (screenWidth < breakpoints.sm) return size * 0.8
+  if (screenWidth < breakpoints.md) return size * 0.9
+  return size
+}
+```

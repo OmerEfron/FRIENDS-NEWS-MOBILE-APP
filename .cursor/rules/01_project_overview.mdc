@@ -1,0 +1,57 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Friendlines - Social News Platform for Friends
+
+## Project Overview
+Friendlines is a mobile-first React Native application that transforms friends' real-life stories into dramatic news headlines. The app creates an engaging, news-like experience for sharing personal moments within friend groups.
+
+## Technical Stack
+- React Native with Expo
+- JavaScript (no TypeScript)
+- React Navigation
+- Tailwind-RN for styling
+- Expo Image Picker
+- React Native Vector Icons
+
+## Directory Structure
+```
+frontend/
+├── App.js
+├── babel.config.js
+├── package.json
+├── assets/
+│   ├── fonts/
+│   └── images/
+├── src/
+│   ├── components/
+│   │   ├── common/
+│   │   ├── feed/
+│   │   ├── groups/
+│   │   └── posts/
+│   ├── screens/
+│   ├── navigation/
+│   ├── hooks/
+│   ├── utils/
+│   ├── constants/
+│   └── context/
+└── app.json
+```
+
+## Core Features
+1. News-style feed of friend stories
+2. Group-based content organization
+3. Real-time breaking news ticker
+4. Media upload and sharing
+5. Interactive post creation
+6. Dark/light mode support
+
+## Design System
+- Primary Color: #0070f3
+- Alert/Live Color: #ef4444
+- Font: Inter or Roboto
+- Card-based layout with shadows
+- Responsive design principles
+- Animation for interactions
